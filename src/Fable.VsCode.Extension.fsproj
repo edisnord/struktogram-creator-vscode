@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../node_modules/ionide-vscode-helpers/src/Fable.Import.VSCode.fs" />
+    <Compile Include="Main.fs" />
+    <Compile Include="InitReact.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <PackageReference Include="Fable.Core" Version="3.1.5" /> -->
+    <!-- <PackageReference Update="FSharp.Core" Version="4.7.2" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Struktogram-Creator\StruktogramViewer\StruktogramViewer.fsproj" />
+    <ProjectReference Include="..\Struktogram-Creator\Parser\Parser.fsproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
+</Project>

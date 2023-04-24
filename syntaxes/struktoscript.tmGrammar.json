@@ -1,0 +1,9 @@
+{
+    "scopeName": "source.ss",
+    "patterns": [{"include": "#block"}],
+    "repository": {
+        "block" : {
+            "patterns": []
+        }
+    }
+}

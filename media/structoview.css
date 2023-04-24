@@ -1,0 +1,405 @@
+/*
+Copyright 2021-2022 Jens Hofschröer <structogramview@nigjo.de>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+:root {
+    --structoview-then: 'true';
+    --structoview-else: 'false';
+    --structoview-default: 'default';
+    --structoview-exit: 'exit';
+
+    --structoview-text: black;
+    --structoview-line: black;
+    --structoview-hint: gray;
+    --structoview-comment: var(--structoview-hint);
+}
+
+@media screen {
+    :root {
+        --structoview-border: lightblue;
+        --structoview-bg: white;
+        --structoview-bg-block: lightgray;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --structoview-text: Gainsboro;
+            --structoview-border: navy;
+            --structoview-line: gray;
+            --structoview-hint: gray;
+            --structoview-comment: var(--structoview-hint);
+            --structoview-bg: black;
+            --structoview-bg-block: #303030;
+        }
+
+    }
+    .structoview-light, .structoview-light * {
+        --structoview-text: black;
+        --structoview-border: lightblue;
+        --structoview-line: black;
+        --structoview-hint: gray;
+        --structoview-comment: var(--structoview-hint);
+        --structoview-bg: white;
+        --structoview-bg-block: lightgray;
+    }
+
+    .structoview-dark, .structoview-dark * {
+        --structoview-text: Gainsboro;
+        --structoview-border: navy;
+        --structoview-line: gray;
+        --structoview-hint: gray;
+        --structoview-comment: var(--structoview-hint);
+        --structoview-bg: black;
+        --structoview-bg-block: #303030;
+    }
+}
+
+:lang(de) {
+    --structoview-then: 'ja';
+    --structoview-else: 'nein';
+    --structoview-default: 'sonst';
+    --structoview-exit: 'beende';
+}
+
+:lang(en) {
+    --structoview-then: 'yes';
+    --structoview-else: 'no';
+    --structoview-default: 'default';
+    --structoview-exit: 'exit';
+}
+
+.struct-diagram > .struct-caption {
+    position: relative;
+    display: block;
+    font-weight: bold;
+    font-size: 1.25em;
+    line-height: 1.5em;
+    border-right: 0;
+    padding-left: .25em;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.struct-sequence, .struct-call, .struct-break {
+    /*word-break: break-all;*/
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+    box-sizing: border-box;
+}
+
+struct-concurrent, .struct-sequence, .struct-decision, struct-select, struct-loop, struct-iteration, .struct-call, .struct-break, struct-comment {
+    padding: .25em;
+    background-color: var(--structoview-bg);
+    border-top: 1px solid var(--structoview-line);
+    border-left: 1px solid var(--structoview-line);
+}
+
+.struct-if {
+    position: relative;
+    display: block;
+    width: 100%;
+    border-right: 0;
+}
+
+.decision-branches{
+    background-color: grey;
+    display: flex;
+    border-right: 1px solid;
+    justify-content: space-between;
+}
+
+struct-concurrent {
+    padding-bottom: 2.25em;
+}
+
+.struct-iteration, .struct-loop {
+    padding: 0px;
+    padding-left: 1.5em;
+}
+
+
+.struct-comment {
+    white-space: pre-line;
+    font-style: italic;
+    color: var(--structoview-comment);
+}
+
+.struct-diagram {
+    display: inline-block;
+    border: 1px dotted gray;
+    color: var(--structoview-text);
+    font-family: sans-serif;
+    min-width: 24em;
+    line-height: 1.5em;
+    padding: .5em;
+    background-color: lightgrey;
+}
+
+.struct-diagram > * {
+    border-right: 1px solid var(--structoview-line);
+}
+
+.struct-diagram > *:last-child:not(.struct-caption),
+.if-else-branch > *:last-child:not(.struct-caption):not(.phi)
+{
+    border-bottom: 1px solid var(--structoview-line);
+}
+
+.decision-graphic {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    max-height: 60px;
+    margin-bottom: -5.8px;
+}
+
+.if-else-branch {
+    display: flex;
+    /*min-height: 60px;*/
+    flex-direction: column;
+    flex-basis: 50%;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.phi {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+
+.struct-break:empty:before {
+    content: ' ';
+    position: relative;
+}
+
+.struct-break[exit="true"]:before {
+    content: var(--structoview-exit) ' ';
+    position: relative;
+}
+
+.struct-break {
+    padding-left: 1.5em;
+    position: relative;
+}
+
+.struct-break:after {
+    content: '';
+    position: absolute;
+    border: 1px solid;
+    border-color: var(--structoview-line);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    transform: rotate(45deg);
+    height: 1.4em;
+    width: 1.4em;
+    top: .25em;
+    left: .28em;
+}
+
+.concurrent-graphic {
+    max-height: 40px;
+    /*border-left: 1px solid;*/
+    /*border-right: 1px solid;*/
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.struct-thread-pool {
+    display: flex;
+    flex-direction: row;
+    border-right: 1px solid;
+    border-top: 0;
+}
+
+.struct-thread :last-child {
+    border-bottom: 1px solid;
+}
+.struct-thread :first-child{
+    border-top: 0;
+}
+
+.struct-thread {
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.struct-concurrent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /*border-top: 1px solid;*/
+}
+
+/*struct-concurrent:before, struct-concurrent:after,*/
+/*struct-concurrent > *:first-child:before,*/
+/*struct-concurrent > *:last-child:after {*/
+/*    position: absolute;*/
+/*    content: '';*/
+/*    border-top: 1px solid var(--structoview-line);*/
+/*    width: 3.2em;*/
+/*    transform-origin: top left;*/
+/*}*/
+
+/*struct-concurrent:before {*/
+/*    transform: rotate(-45deg);*/
+/*}*/
+
+/*struct-concurrent:after {*/
+/*    top: 0;*/
+/*    right: -.91em;*/
+/*    transform: rotate(45deg);*/
+/*}*/
+
+/*struct-concurrent > *:first-child:before {*/
+/*    transform: rotate(45deg);*/
+/*    bottom: -1px;*/
+/*    left: 0;*/
+/*}*/
+
+/*struct-concurrent > *:last-child:after {*/
+/*    transform: rotate(-45deg);*/
+/*    right: 0;*/
+/*    transform-origin: top right;*/
+/*    bottom: -2px;*/
+/*}*/
+
+/*struct-concurrent {*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*struct-concurrent > struct-block > * {*/
+/*    border-left: none !important;*/
+/*}*/
+
+/*struct-concurrent > * {*/
+/*    position: relative;*/
+/*    border-bottom: 1px solid var(--structoview-line);*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    padding-left: 1.5em;*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select:after {*/
+/*    text-align: left;*/
+/*    left: .25em;*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select > *:before {*/
+/*    background: none;*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select > *:not(:first-child) {*/
+/*    margin-top: 1.5em;*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select > *:first-child {*/
+/*    border-left: 1px solid var(--structoview-line);*/
+/*}*/
+
+/*.struct-diagram.compactselect .struct-select > .struct-block:after {*/
+/*    right: unset;*/
+/*}*/
+
+.struct-call {
+    padding-left: 1em;
+    padding-right: 1em;
+    position: relative;
+    min-height: 2em;
+}
+
+.struct-call:after, .struct-call:before {
+    display: block;
+    width: .5em;
+    height: 100%;
+    content: '';
+    position: absolute;
+    top: 0px;
+}
+
+.struct-call:after {
+    right: 0em;
+    border-left: 1px solid var(--structoview-line);
+}
+
+.struct-call:before {
+    left: 0em;
+    border-right: 1px solid var(--structoview-line);
+}
+
+.diagram {
+    font-size: large;
+    position: relative;
+    visibility: visible;
+    display: inline-block;
+    vertical-align: top;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 50%;
+}
+
+/*.struct-for {*/
+/*    padding-left: 20px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.struct-for > .struct-sequence {*/
+/*    border-right: 0; !important;*/
+/*    border-left: 0; !important;*/
+/*    border-bottom: 0; !important;*/
+/*}*/
+
+.struct-loop > * :not(#loop-cond) {
+    border-right: 1px solid;
+}
+
+.struct-loop, .struct-for {
+    background-color: white;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    /*border-right: 1px solid;*/
+    border-left: 1px solid;
+    border-top: 1px solid;
+}
+
+.struct-loop >  :last-child {
+    border-top: 1px solid;
+}
+
+.struct-loop > :first-child {
+    border-top: 0; !important;
+}
+
+.struct-for >  :last-child {
+    border-bottom: 0; !important;
+}
+
+#loop-cond > .struct-sequence {
+    border-right: 0; !important;
+    border-left: 0; !important;
+    border-top: 0; !important;
+    border-bottom: 0; !important;
+    min-height: 36px;
+}

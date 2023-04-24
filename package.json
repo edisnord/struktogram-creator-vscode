@@ -1,0 +1,82 @@
+{
+  "name": "struktogram-creator-vscode",
+  "displayName": "Struktogram creator",
+  "description": "Struktogram(Nassi-Shneiderman diagram) creator for the VS Code, with syntax greatly inspired from github user Nigjo's struktogramview",
+  "icon": "fable_logo.png",
+  "version": "0.1.0",
+  "publisher": "edisnord",
+  "license": "Apache 2.0",
+  "repository": {
+    "url": "https://github.com/edisnord/Struktogram-Creator"
+  },
+  "bugs": {
+    "url": "https://github.com/edisnord/Struktogram-Creator/issues"
+  },
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:StruktoScript",
+    "onCommand:struktogram.openPreview"
+  ],
+  "main": "./dist/Main.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "struktogram.openPreview",
+        "title": "Open Struktogram Preview",
+        "icon": {
+          "dark": "./icons/open-preview-dark.svg",
+          "light": "./icons/open-preview-light.svg"
+        }
+      }
+    ],
+    "languages": [
+      {
+        "id": "StruktoScript",
+        "extensions": [
+          ".ss"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "StruktoScript",
+        "scopeName": "source.ss",
+        "path": "./syntaxes/struktoscript.tmGrammar.json"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "editorLangId == StruktoScript",
+          "command": "struktogram.openPreview",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "install": "dotnet tool restore",
+    "build": "cp src/*.ts build && dotnet fable src -o build --run npm run esbuild && cp dist/addMess* media",
+    "start": "dotnet fable watch src -s -o build --run npm run esbuild -- --watch",
+    "esbuild": "esbuild ./build/ReactPanel.ts ./build/addMessageListener.ts ./build/Main.js --bundle --minify '--define:process.env.NODE_ENV=\"production\"' --outdir=dist --external:vscode --format=cjs --platform=node --sourcemap ",
+    "prepack": "npm run build",
+    "pack": "vsce package"
+  },
+  "dependencies": {
+    "ionide-vscode-helpers": "ionide/ionide-vscode-helpers",
+    "jest": "^27.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "vscode": "^1.1.37"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.0",
+    "esbuild": "^0.13.8"
+  }
+}
